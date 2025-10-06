@@ -62,6 +62,5 @@ async def autosend(channel):
         sent_msg = await channel.send(make_insult(), file=get_recent_image(images_path)) 
         await asyncio.sleep(4*60*60)
 
-asyncio.run(autosend())
 client.run(token)
 
