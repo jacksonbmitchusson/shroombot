@@ -11,6 +11,10 @@ with open('names-insults.txt') as f:
     names = lines[0].split(',')
     insults = lines[1].split(',')
 
+emojis = ... 
+with open('emojis.txt'):
+    emojis = f.read().split(',')
+
 token = ...
 with open('token') as f:
     token = f.read()
@@ -25,6 +29,9 @@ intents.messages = True
 intents.reactions = True
 
 client = discord.Client(intents=intents)
+
+def random_emoji():
+    return emojis[random.randint(0, len(emojis) - 1)]
 
 def make_insult():
     name = names[random.randint(0, len(names) - 1)]
@@ -53,7 +60,7 @@ async def on_ready():
 async def on_message(message):
     if message.content == 'please give me an image':
         sent_msg = await message.reply(make_insult(), file=get_recent_image(images_path))   
-        #add reaction
+        await sent_msg.add_reaction(random_emoji())
 
 async def autosend(channel):
     await client.wait_until_ready()
