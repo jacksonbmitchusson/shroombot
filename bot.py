@@ -67,6 +67,7 @@ async def autosend(channel):
     time.sleep(0.5)
     while not client.is_closed():
         sent_msg = await channel.send(make_insult(), file=get_recent_image(images_path)) 
+        await sent_msg.add_reaction(random_emoji())
         await asyncio.sleep(4*60*60)
 
 client.run(token)
