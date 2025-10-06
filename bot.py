@@ -14,7 +14,7 @@ token = ...
 with open('token') as f:
     token = f.read()
 
-images_path = '/home/onaquest/server-output'
+images_path = '/home/onaquest/server-output/images'
 
 # init bot 
 #intents = 109632
@@ -40,7 +40,7 @@ def make_insult():
 # returns discord file object 
 def get_recent_image(images_path):
     recent_path = max(os.listdir(images_path))
-    return discord.File(images_path, recent_path)   
+    return discord.File(f'{images_path}/{recent_path}')
 
 
 @client.event 
