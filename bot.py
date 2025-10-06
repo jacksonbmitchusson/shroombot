@@ -1,5 +1,6 @@
 import discord
 import os
+import asyncio
 import time
 import random
 
@@ -42,15 +43,25 @@ def get_recent_image(images_path):
     recent_path = max(os.listdir(images_path))
     return discord.File(f'{images_path}/{recent_path}')
 
+@client.event
+async def on_ready(): 
+    guild = client.get_guild(516440617199337506) # henry's cage ID
+    channel = guild.get_channel(1406777331053232208) # mushroom chat ID 
+    asyncio.create_task(autosend(channel))
 
 @client.event 
 async def on_message(message):
-    sent_msg = await message.reply(make_insult(), file=get_recent_image(images_path))   
+    if message.content == 'please give me an image':
+        sent_msg = await message.reply(make_insult(), file=get_recent_image(images_path))   
+        #add reaction
 
+async def autosend(channel):
+    await client.wait_until_ready()
+    time.sleep(0.5)
+    while not client.is_closed():
+        sent_msg = await channel.send(make_insult(), file=get_recent_image(images_path)) 
+        await asyncio.sleep(4*60*60)
 
+asyncio.run(autosend())
 client.run(token)
-    # send image to server
 
-
-# figure out how send img 
-# 
