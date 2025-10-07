@@ -46,9 +46,9 @@ def make_insult():
 
 
 # returns discord file object 
-def get_recent_image(images_path):
-    recent_path = max(os.listdir(images_path))
-    return discord.File(f'{images_path}/{recent_path}')
+def get_recent_image(images_path, id):
+    recent_path = max(os.listdir(f'{images_path}{id}'))
+    return discord.File(f'{images_path}{id}/{recent_path}')
 
 @client.event
 async def on_ready(): 
@@ -59,7 +59,16 @@ async def on_ready():
 @client.event 
 async def on_message(message):
     if message.content == 'please give me an image':
-        sent_msg = await message.reply(make_insult(), file=get_recent_image(images_path))   
+        sent_msg = await message.reply('ugh. looks like *somebody* didnt get the memo 🙄\nyou have to say \"top\" \"side"\" or \"both\" at the end now dumbass')   
+        await sent_msg.add_reaction(random_emoji())
+    if message.content == 'please give me an image top':
+        sent_msg = await message.reply(make_insult(), file=get_recent_image(images_path, 0))   
+        await sent_msg.add_reaction(random_emoji())
+    if message.content == 'please give me an image side':
+        sent_msg = await message.reply(make_insult(), file=get_recent_image(images_path, 1))   
+        await sent_msg.add_reaction(random_emoji())
+    if message.content == 'please give me an image both':
+        sent_msg = await message.reply(make_insult(), files=[get_recent_image(images_path, 0), get_recent_image(images_path, 1)])   
         await sent_msg.add_reaction(random_emoji())
 
 async def autosend(channel):
