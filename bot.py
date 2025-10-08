@@ -16,7 +16,7 @@ token = ...
 with open('token') as f:
     token = f.read()
 
-env_path = '/home/onaquest/server-output/images/environment_log.txt'
+env_path = '/home/onaquest/server-output/environment_log.txt'
 images_path = '/home/onaquest/server-output/images'
 
 # init bot 
