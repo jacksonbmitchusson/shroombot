@@ -81,7 +81,7 @@ async def on_message(message):
         with open('insults.txt', 'a') as f:
             f.write(f'{added_insult}\n')
         sent_msg = await message.reply(f'ok i did it. i added {added_insult}')
-        sent_msg.add_reaction('🙂‍↕️')
+        sent_msg.add_reaction('🐱‍🏍')
 
 async def autosend(channel):
     await client.wait_until_ready()
