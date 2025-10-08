@@ -78,7 +78,7 @@ async def on_message(message):
         await sent_msg.add_reaction(random_emoji())
     
     if message.content.startswith('please mr shroombot can i add this insult:') and len(message.content) > 42:
-        added_insult = message.content.split(':')[1].trim()
+        added_insult = message.content.split(':')[1].strip()
         with open('insults.txt', 'a') as f:
             f.write(f'{added_insult}\n')
         sent_msg = await message.reply(f'ok i did it. i added {added_insult}')
