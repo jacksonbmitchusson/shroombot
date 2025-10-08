@@ -6,10 +6,7 @@ import random
 
 names = ...
 insults = ...
-with open('names.txt') as f:
-    names = f.read().split('\n')
-with open('insults.txt') as f:
-    insults = f.read().split('\n')
+get_insult_supplies()
 
 emojis = ...
 with open('emojis.txt') as f:
@@ -30,10 +27,19 @@ intents.reactions = True
 
 client = discord.Client(intents=intents)
 
+def get_insult_supplies():   
+    global names
+    global insults 
+    with open('names.txt') as f:
+        names = f.read().split('\n')
+    with open('insults.txt') as f:
+        insults = f.read().split('\n')
+
 def random_emoji():
     return emojis[random.randint(0, len(emojis) - 1)]
 
 def make_insult():
+    get_insult_supplies()
     name = names[random.randint(0, len(names) - 1)]
     insult = insults[random.randint(0, len(insults) - 1)]
 
@@ -75,6 +81,8 @@ async def on_message(message):
         added_insult = message.content.split(':')[1].trim()
         with open('insults.txt', 'a') as f:
             f.write(f'{added_insult}\n')
+        sent_msg = await message.reply(f'ok i did it. i added {added_insult}')
+        sent_msg.add_reaction('🙂‍↕️')
 
 async def autosend(channel):
     await client.wait_until_ready()
