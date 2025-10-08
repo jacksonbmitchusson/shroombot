@@ -4,9 +4,9 @@ import asyncio
 import time
 import random
 
+
 names = ...
 insults = ...
-get_insult_supplies()
 
 emojis = ...
 with open('emojis.txt') as f:
@@ -50,7 +50,6 @@ def make_insult():
 
     return f'{name} is a {insult}'
 
-
 # returns discord file object 
 def get_recent_image(images_path, id):
     recent_path = max(os.listdir(f'{images_path}{id}'))
@@ -91,6 +90,8 @@ async def autosend(channel):
         sent_msg = await channel.send(make_insult(), files=[get_recent_image(images_path, 0), get_recent_image(images_path, 1)]) 
         await sent_msg.add_reaction(random_emoji())
         await asyncio.sleep(4*60*60)
+
+get_insult_supplies()
 
 client.run(token)
 
