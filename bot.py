@@ -69,22 +69,12 @@ async def on_ready():
 @client.event 
 async def on_message(message):
     if message.content == 'please give me an image':
-        sent_msg = await message.reply('ugh. looks like *somebody* didnt get the memo 🙄\nyou have to say \"top\" \"side"\" or \"both\" at the end now dumbass')   
-        await sent_msg.add_reaction(random_emoji())
-    if message.content == 'please give me an image top':
-        sent_msg = await message.reply(f'{make_insult()}\n{get_recent_env()}', file=get_recent_image(images_path, 0))   
-        await sent_msg.add_reaction(random_emoji())
-    if message.content == 'please give me an image side':
-        sent_msg = await message.reply(f'{make_insult()}\n{get_recent_env()}', file=get_recent_image(images_path, 1))   
-        await sent_msg.add_reaction(random_emoji())
-    if message.content == 'please give me an image both':
         sent_msg = await message.reply(f'{make_insult()}\n{get_recent_env()}', files=[get_recent_image(images_path, 0), get_recent_image(images_path, 1)])   
         await sent_msg.add_reaction(random_emoji())
-    
-    if message.content.startswith('please mr shroombot can i add this insult:') and len(message.content) > 42:
+    if message.content.startswith('shroombot add insult:') and len(message.content.split(':')) > 1
         added_insult = message.content.split(':')[1].strip()
         with open('insults.txt', 'a') as f:
-            f.write(f'{added_insult}\n')
+            f.write(f'\n{added_insult}')
         sent_msg = await message.reply(f'ok i did it. i added {added_insult}')
         sent_msg.add_reaction('🐱‍🏍')
 
