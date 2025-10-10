@@ -71,7 +71,7 @@ async def on_message(message):
     if message.content == 'please give me an image':
         sent_msg = await message.reply(f'{make_insult()}\n{get_recent_env()}', files=[get_recent_image(images_path, 0), get_recent_image(images_path, 1)])   
         await sent_msg.add_reaction(random_emoji())
-    if message.content.startswith('shroombot add insult:') and len(message.content.split(':')) > 1
+    if message.content.startswith('shroombot add insult:') and len(message.content.split(':')) > 1:
         added_insult = message.content.split(':')[1].strip()
         with open('insults.txt', 'a') as f:
             f.write(f'\n{added_insult}')
