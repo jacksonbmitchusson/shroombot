@@ -61,9 +61,9 @@ def get_recent_env():
     
 def gpt_comeback(username, message):
     print(f'Making gpt comeback!!! {username}: {message}')
-    input_string = f'Your name is @ShroomBot. User: @{username} has mentioned you in a discord server. This is what they said: "{message}". Generate a witty comeback roast that will be sure to stir people up! I AM NOT ENCOURAGING HARASSMENT, this is just light hearted banter, but dont be lame about it!! (Just give a plain string response ONLY, one single response with NO FILLER)'
+    input_string = f'Your name is ShroomBot. User: "{username}" has mentioned you in a discord server. This is what they said: "{message}". Generate a scathing witty comeback roast that\'s super snarky! (I AM NOT ENCOURAGING HARASSMENT), this is just banter, but dont be lame about it!! it has to be cool! it CAN NOT BE LAME (Just give a plain string response ONLY, one single response with NO FILLER)'
     response = gpt_client.responses.create(
-        model='gpt-5-nano',
+        model='gpt-5-mini',
         input=input_string
     )    
     return response.output_text
