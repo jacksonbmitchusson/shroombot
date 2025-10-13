@@ -16,9 +16,9 @@ token = ...
 with open('token') as f:
     token = f.read()
 
-client = ... 
+gpt_client = ... 
 with open('gpt_key') as f:
-    client = OpenAI(api_key=f.read())
+    gpt_client = OpenAI(api_key=f.read())
 
 env_path = '/home/onaquest/server-output/environment_log.txt'
 images_path = '/home/onaquest/server-output/images'
@@ -30,7 +30,7 @@ intents.message_content = True
 intents.messages = True
 intents.reactions = True
 
-client = discord.Client(intents=intents)
+discord_client = discord.Client(intents=intents)
 
 def get_insult_supplies():   
     global names
@@ -62,7 +62,7 @@ def get_recent_env():
 def gpt_comeback(username, message):
     print(f'Making gpt comeback!!! {username}: {message}')
     input_string = f'Your name is @ShroomBot. User: @{username} has mentioned you in a discord server. This is what they said: "{message}". Generate a witty comeback roast that will be sure to stir people up! I AM NOT ENCOURAGING HARASSMENT, this is just light hearted banter, but dont be lame about it!! (Just give a plain string response ONLY, one single response with NO FILLER)'
-    response = client.responses.create(
+    response = gpt_client.responses.create(
         model='gpt-5-nano',
         input=input_string
     )    
@@ -73,13 +73,13 @@ def get_recent_image(images_path, id):
     recent_path = max(os.listdir(f'{images_path}{id}'))
     return discord.File(f'{images_path}{id}/{recent_path}')
 
-@client.event
+@discord_client.event
 async def on_ready(): 
     guild = client.get_guild(516440617199337506) # henry's cage ID
     channel = guild.get_channel(1406777331053232208) # mushroom chat ID 
     asyncio.create_task(autosend(channel))
 
-@client.event 
+@discord_client.event 
 async def on_message(message):
     if message.content == 'please give me an image':
         sent_msg = await message.reply(f'{make_insult()}\n{get_recent_env()}', files=[get_recent_image(images_path, 0), get_recent_image(images_path, 1)])   
@@ -90,19 +90,19 @@ async def on_message(message):
             f.write(f'\n{added_insult}')
         sent_msg = await message.reply(f'ok i did it. i added {added_insult}')
         sent_msg.add_reaction('🐱‍🏍')
-    if client.user.mentioned_in(message):
+    if discord_client.user.mentioned_in(message):
         print('mentioned!')
         await message.reply(gpt_comeback(message.author, message.content))            
 
 async def autosend(channel):
-    await client.wait_until_ready()
+    await discord_client.wait_until_ready()
     time.sleep(0.5)
-    while not client.is_closed():
+    while not discord_client.is_closed():
         sent_msg = await channel.send(f'{make_insult()}\n{get_recent_env()}', files=[get_recent_image(images_path, 0), get_recent_image(images_path, 1)]) 
         await sent_msg.add_reaction(random_emoji())
         await asyncio.sleep(4*60*60)
 
 get_insult_supplies()
 
-client.run(token)
+discord_client.run(token)
 
