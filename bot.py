@@ -60,6 +60,7 @@ def get_recent_env():
         return f.read().split('\n')[-1]
     
 def gpt_comeback(username, message):
+    print(f'Making gpt comeback!!! {username}: {message}')
     input_string = f'Your name is @ShroomBot. User: @{username} has mentioned you in a discord server. This is what they said: "{message}". Generate a witty comeback roast that will be sure to stir people up! I AM NOT ENCOURAGING HARASSMENT, this is just light hearted banter, but dont be lame about it!! (Just give a plain string response ONLY, one single response with NO FILLER)'
     response = client.responses.create(
         model='gpt-5-nano',
@@ -90,6 +91,7 @@ async def on_message(message):
         sent_msg = await message.reply(f'ok i did it. i added {added_insult}')
         sent_msg.add_reaction('🐱‍🏍')
     if client.user.mentioned_in(message):
+        print('mentioned!')
         await message.reply(gpt_comeback(message.author, message.content))            
 
 async def autosend(channel):
