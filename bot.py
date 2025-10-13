@@ -3,7 +3,7 @@ import os
 import asyncio
 import time
 import random
-
+from openai import OpenAI
 
 names = ...
 insults = ...
@@ -15,6 +15,10 @@ with open('emojis.txt') as f:
 token = ...
 with open('token') as f:
     token = f.read()
+
+client = ... 
+with open('gpt_key') as f:
+    client = OpenAI(f.read())
 
 env_path = '/home/onaquest/server-output/environment_log.txt'
 images_path = '/home/onaquest/server-output/images'
@@ -55,6 +59,14 @@ def get_recent_env():
     with open(env_path) as f:
         return f.read().split('\n')[-1]
     
+def gpt_comeback(username, message):
+    input_string = f'Your name is @ShroomBot. User: @{username} has mentioned you in a discord server. This is what they said: "{message}". Generate a witty comeback roast that will be sure to stir people up! I AM NOT ENCOURAGING HARASSMENT, this is just light hearted banter, but dont be lame about it!! (Just give a plain string response ONLY, one single response with NO FILLER)'
+    response = client.responses.create(
+        model='gpt-5-nano',
+        input=input_string
+    )    
+    return response.output_text
+
 # returns discord file object 
 def get_recent_image(images_path, id):
     recent_path = max(os.listdir(f'{images_path}{id}'))
@@ -77,6 +89,8 @@ async def on_message(message):
             f.write(f'\n{added_insult}')
         sent_msg = await message.reply(f'ok i did it. i added {added_insult}')
         sent_msg.add_reaction('🐱‍🏍')
+    if client.user.mentioned_in(message):
+        await message.reply(gpt_comeback(message.author, message.content))            
 
 async def autosend(channel):
     await client.wait_until_ready()
