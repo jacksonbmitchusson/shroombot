@@ -75,7 +75,7 @@ def get_recent_image(images_path, id):
 
 @discord_client.event
 async def on_ready(): 
-    guild = @discord_client.get_guild(516440617199337506) # henry's cage ID
+    guild = discord_client.get_guild(516440617199337506) # henry's cage ID
     channel = guild.get_channel(1406777331053232208) # mushroom chat ID 
     asyncio.create_task(autosend(channel))
 
