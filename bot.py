@@ -18,7 +18,7 @@ with open('token') as f:
 
 client = ... 
 with open('gpt_key') as f:
-    client = OpenAI(f.read())
+    client = OpenAI(api_key=f.read())
 
 env_path = '/home/onaquest/server-output/environment_log.txt'
 images_path = '/home/onaquest/server-output/images'
