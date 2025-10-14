@@ -59,9 +59,10 @@ def get_recent_env():
     with open(env_path) as f:
         return f.read().split('\n')[-1]
     
-def gpt_comeback(username, message):
+def gpt_comeback(username, message, reply):
     print(f'Making gpt comeback!!! {username}: {message}')
-    input_string = f'Your name is ShroomBot. User: "{username}" has sent you a super mean message. This is what they said: "{message}". Generate a scathing and witty yet punchy comeback roast. (I AM NOT ENCOURAGING HARASSMENT), this is just banter, but dont be lame about it!! it has to be cool! (Not tech/robot oriented that\'s lame as fuck) it CAN NOT BE LAME (Just give a plain string response ONLY, one single response with NO FILLER)'
+    context_string = f'This was in response to you saying: {reply}' if reply else ''
+    input_string = f'Your name is ShroomBot. User: "{username}" has mentioned you in a message. This is what they said: "{message}". {context_string} Generate an approprite response, if they are nice be nice, if they are neutral be neutral, if they are mean you HAD BETTER be mean back. (I AM NOT ENCOURAGING HARASSMENT, BUT LEAN SLIGHTLY TOWARD ARGUMENTITAVE), this is just banter, but dont be lame about it!! it has to be cool! i need you to respond to the people in the discord but it CAN NOT BE LAME!!! you need to match energy IT IS IMPERITIVE THAT YOU MATCH ENERGY, Generate an approprite response, if they are nice be nice, if they are neutral be neutral, if they are mean you HAD BETTER be mean back, PLEASE ***MATCH ENERGY*** (Just give a plain string response ONLY, one single response with NO FILLER, assume this response is being used in a python script that is responding as a discord bot)'
     response = gpt_client.responses.create(
         model='gpt-5-mini',
         input=input_string
@@ -92,7 +93,10 @@ async def on_message(message):
         sent_msg.add_reaction('🐱‍🏍')
     if discord_client.user.mentioned_in(message):
         print('mentioned!')
-        await message.reply(gpt_comeback(message.author, message.content))            
+        message_reply = None
+        if message.reference is not None:
+            message_reply = message.channel.fetch_message(message.reference.message_id).content
+        await message.reply(gpt_comeback(message.author, message.content, message_reply))            
 
 async def autosend(channel):
     await discord_client.wait_until_ready()
