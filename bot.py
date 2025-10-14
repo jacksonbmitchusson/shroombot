@@ -100,7 +100,7 @@ async def autosend(channel):
     while not discord_client.is_closed():
         sent_msg = await channel.send(f'{make_insult()}\n{get_recent_env()}', files=[get_recent_image(images_path, 0), get_recent_image(images_path, 1)]) 
         await sent_msg.add_reaction(random_emoji())
-        await asyncio.sleep(4*60*60)
+        await asyncio.sleep(8*60*60)
 
 get_insult_supplies()
 
