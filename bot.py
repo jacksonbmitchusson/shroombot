@@ -81,18 +81,19 @@ async def on_ready():
 
 @discord_client.event 
 async def on_message(message):
-    if message.content == 'please give me an image':
-        sent_msg = await message.reply(f'{make_insult()}\n{get_recent_env()}', files=[get_recent_image(images_path, 0), get_recent_image(images_path, 1)])   
-        await sent_msg.add_reaction(random_emoji())
-    if message.content.startswith('shroombot add insult:') and len(message.content.split(':')) > 1:
-        added_insult = message.content.split(':')[1].strip()
-        with open('insults.txt', 'a') as f:
-            f.write(f'\n{added_insult}')
-        sent_msg = await message.reply(f'ok i did it. i added {added_insult}')
-        sent_msg.add_reaction('🐱‍🏍')
-    if discord_client.user.mentioned_in(message):
-        print('mentioned!')
-        await message.reply(gpt_comeback(message.author, message.content))            
+    if message.author != discord_client.user:
+        if message.content == 'please give me an image':
+            sent_msg = await message.reply(f'{make_insult()}\n{get_recent_env()}', files=[get_recent_image(images_path, 0), get_recent_image(images_path, 1)])   
+            await sent_msg.add_reaction(random_emoji())
+        if message.content.startswith('shroombot add insult:') and len(message.content.split(':')) > 1:
+            added_insult = message.content.split(':')[1].strip()
+            with open('insults.txt', 'a') as f:
+                f.write(f'\n{added_insult}')
+            sent_msg = await message.reply(f'ok i did it. i added {added_insult}')
+            sent_msg.add_reaction('🐱‍🏍')
+        if discord_client.user.mentioned_in(message):
+            print('mentioned!')
+            await message.reply(gpt_comeback(message.author, message.content))            
 
 async def autosend(channel):
     await discord_client.wait_until_ready()
